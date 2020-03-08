@@ -1,0 +1,20 @@
+﻿<Window x:Class="WhatsappTray2.MainWindow"
+		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
+		xmlns:local="clr-namespace:WhatsappTray2"
+		mc:Ignorable="d"
+		Title="Whatsapp" Height="665.989" Width="835.772" StateChanged="Window_StateChanged">
+	<Grid>
+		<Border BorderBrush="Gray" BorderThickness="0,1" Grid.ColumnSpan="2">
+			<wpf:ChromiumWebBrowser x:Name="Browser" Address="https://web.whatsapp.com/"/>
+		</Border>
+		<StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top">
+			<Button Width="10" Height="10" Content="A" FontSize="6" Click="Button_Click_A" Visibility="Hidden"/>
+			<Button Width="10" Height="10" Content="B" FontSize="6" Click="Button_Click_B" Visibility="Hidden"/>
+			<Button Width="10" Height="10" Content="?" FontSize="6" BorderThickness="0" Click="Button_Click_WhatsappTrayInfo"></Button>
+		</StackPanel>
+	</Grid>
+</Window>
