@@ -69,6 +69,8 @@ namespace WhatsappTray2
 				// If the Browser is not shown we need to initialize it, otherwise it will not load the webpage.
 				Browser.CreateBrowser(null, new Size(20, 20));
 			}
+
+			Browser.DownloadHandler = new DownloadHandler();
 		}
 
 		public async Task PeriodicWaitForWhatsappInitialized(TimeSpan interval, CancellationToken cancellationToken)
