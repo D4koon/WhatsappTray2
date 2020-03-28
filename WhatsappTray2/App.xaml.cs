@@ -72,14 +72,14 @@ namespace WhatsappTray2
 		private void FirstChanceExceptionHandler(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs args)
 		{
 			Exception e = args.Exception;
-			logger.Debug("FirstChanceException caught: " + e.Message);
+			logger.Fatal("FirstChanceException caught: " + e.Message);
 		}
 
 		static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
 		{
 			Exception e = (Exception)args.ExceptionObject;
-			logger.Debug("UnhandledExceptionHandler caught : " + e.Message);
-			logger.Debug("Runtime terminating: {0}", args.IsTerminating);
+			logger.Fatal("UnhandledExceptionHandler caught : " + e.Message);
+			logger.Fatal("Runtime terminating: {0}", args.IsTerminating);
 		}
 
 		private void Application_Exit(object sender, ExitEventArgs e)

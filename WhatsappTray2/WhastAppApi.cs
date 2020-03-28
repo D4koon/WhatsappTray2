@@ -1443,9 +1443,7 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 				return "timeout";
 			}
 
-			logger.Info("Initialized WhatsappApi. evaluateTask.Result.Success:" + evaluateTask.Result.Success);
-
-			var result = evaluateTask.Result.Result;
+			logger.Log(evaluateTask.Result.Success ? NLog.LogLevel.Info : NLog.LogLevel.Fatal, $"Initialized WhatsappApi. evaluateTask.Result.Success: {evaluateTask.Result.Success}");
 
 			return "";
 		}
@@ -1478,8 +1476,13 @@ window.WAPI.demoteParticipantAdminGroup = function (idGroup, idParticipant, done
 			try {
 				javascriptResponse = ExecuteScript("return window.WAPI.getAllChatsWithNewMsg();", 2000);
 				//javascriptResponse = ExecuteScript(Browser, "return window.WAPI.getAllContacts();", 2000);
-			} catch (Exception) {
-				return -1;
+			} catch {
+				logger.Fatal(nameof(GetAllChatsWithNewMsgCount) + "() - " + "Error when executing script.");
+				throw;
+			}
+
+			if (javascriptResponse.Success == false) {
+				logger.Fatal(nameof(GetAllChatsWithNewMsgCount) + "() - " + javascriptResponse.Message);
 			}
 
 			if (javascriptResponse.Result is List<object>) {
