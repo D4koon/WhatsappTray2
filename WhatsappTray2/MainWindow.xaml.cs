@@ -26,7 +26,7 @@ namespace WhatsappTray2
 	public partial class MainWindow : Window
 	{
 		private const string AppName = "WhatsappTray";
-		private const string Version = "2.0.1.0";
+		private const string Version = "2.1.0.0";
 
 		private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
