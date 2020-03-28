@@ -36,6 +36,7 @@ namespace WhatsappTray2
 
 			using (Graphics gr = Graphics.FromImage(bitmap)) {
 				gr.SmoothingMode = SmoothingMode.AntiAlias;
+				//gr.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
 				//if (text.Length == 1) {
 				//	Font drawFont = new Font("Arial", 19, FontStyle.Bold);
@@ -56,7 +57,41 @@ namespace WhatsappTray2
 				gr.Flush();
 			}
 
+			// Making it smaller make it less pixelated.
+			// It seems like the windows-automatic scaling is not really good
+			bitmap = ResizeImage(bitmap, 32, 32);
+
 			return bitmap;
+		}
+
+		/// <summary>
+		/// Resize the image to the specified width and height.
+		/// </summary>
+		/// <param name="image">The image to resize.</param>
+		/// <param name="width">The width to resize to.</param>
+		/// <param name="height">The height to resize to.</param>
+		/// <returns>The resized image.</returns>
+		public static Bitmap ResizeImage(Image image, int width, int height)
+		{
+			var destRect = new Rectangle(0, 0, width, height);
+			var destImage = new Bitmap(width, height);
+
+			destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+
+			using (var graphics = Graphics.FromImage(destImage)) {
+				graphics.CompositingMode = CompositingMode.SourceCopy;
+				graphics.CompositingQuality = CompositingQuality.HighQuality;
+				graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+				graphics.SmoothingMode = SmoothingMode.HighQuality;
+				graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+				using (var wrapMode = new System.Drawing.Imaging.ImageAttributes()) {
+					wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+					graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+				}
+			}
+
+			return destImage;
 		}
 
 		public static Icon DrawIcon(string text)

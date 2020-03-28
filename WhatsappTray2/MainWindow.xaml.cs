@@ -26,7 +26,7 @@ namespace WhatsappTray2
 	public partial class MainWindow : Window
 	{
 		private const string AppName = "WhatsappTray";
-		private const string Version = "2.0.0.0";
+		private const string Version = "2.0.1.0";
 
 		private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -91,14 +91,20 @@ namespace WhatsappTray2
 
 		public async Task PeriodicMessageCountUpdate(TimeSpan interval, CancellationToken cancellationToken)
 		{
+			var lastCount = -1;
+			var count = -1;
 			while (true) {
 				logger.Info(nameof(PeriodicMessageCountUpdate));
 
-				var count = WhatsAppApi.GetAllChatsWithNewMsgCount();
-				var tempIcon = tbi.Icon;
-				tbi.Icon = IconDrawing.DrawIcon(count.ToString());
-				tempIcon.Dispose();
-				SetIconSafe(count.ToString());
+				lastCount = count;
+				count = WhatsAppApi.GetAllChatsWithNewMsgCount();
+				if (count != lastCount) {
+					var tempIcon = tbi.Icon;
+					tbi.Icon = IconDrawing.DrawIcon(count.ToString());
+					tempIcon.Dispose();
+					SetIconSafe(count.ToString());
+				}
+
 				await Task.Delay(interval, cancellationToken);
 			}
 		}
